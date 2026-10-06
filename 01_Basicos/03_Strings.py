@@ -1,8 +1,32 @@
-### Strings ###
+# ==========================================
+# 03: STRINGS (Cadenas de texto)
+# ==========================================
 
-#   \n: Nueva Linea
-#   \t: Tab(8 espacios)
-#   \" , \' , \\: Comilla Simple ('), Comilla Doble ("), Back slash (\)
+# ==========================================
+# CREACIÓN Y OPERACIONES BÁSICAS
+# ==========================================
+
+    # 1. Creación Básica y Multilínea
+    # Puedes usar comillas simples o dobles. Para textos de varias líneas, usa triples.
+texto_simple = "Hola Mundo"
+texto_largo = """Este es un texto
+que respeta los saltos de línea
+tal y como los escribes."""
+
+    # 2. Caracteres de Escape (Trucos dentro del texto)
+        # \n  -> Nueva Línea (Enter)
+        # \t  -> Tabulador (Crea un espacio grande)
+        # \\  -> Imprime una barra diagonal '\' real
+        # \' o \" -> Permite imprimir comillas dentro de un texto con comillas
+
+    # 3. Operaciones Matemáticas con Textos
+        # Concatenar (+) : "Hola " + "Mundo" -> "Hola Mundo"
+        # Repetir (*)    : "Ja" * 3          -> "JaJaJa"
+
+    # 4. Longitud y Pertenencia
+        # len() -> Cuenta caracteres (incluyendo espacios): len("Hola") -> 4
+        # in    -> Busca sub-textos: "py" in "python" -> True
+
 
 # ==========================================
 # FORMATEO DE CADENAS ESTILO %
@@ -31,7 +55,7 @@
         # %G (general): Igual que %g pero con letras mayúsculas
 
     # Especial
-        # %%(porcentaje): Imprime el símbolo '%' literal
+        # %% (porcentaje): Imprime el símbolo '%' literal
 
     # Modificadores (Se ponen entre el % y la letra)
         # %.Nf : Limita a N decimales precisos (ej. %.2f -> 3.14)
@@ -122,6 +146,7 @@
         # texto[0:6:2] -> 'Pto' (De principio a fin, saltando de 2 en 2)
         # texto[::-1]  -> 'nohtyP' (¡El truco de oro para invertir textos!)
 
+
 # ==========================================
 # MÉTODOS DE STRINGS (Textos)
 # ==========================================
@@ -165,52 +190,58 @@
 
 
 # ==========================================
-# EJEMPLO PRÁCTICO: PROCESADOR DE PERFILES
+# EJEMPLO PRÁCTICO: GENERADOR DE USUARIOS CORPORATIVOS
 # ==========================================
+print("\n--- SISTEMA DE RECURSOS HUMANOS ---")
+print("Por favor, ingresa tus datos para generar tu perfil corporativo.")
 
-print("\n--- INICIO DEL EJEMPLO PRÁCTICO ---")
+# 1. Recibimos un input "sucio" interactivo
+# Prueba a escribirlo mal a propósito: con mayúsculas mezcladas y espacios locos.
+datos_crudos = input("Ingresa Nombre, Apellido y Año separados por coma (Ej: '   aLeJaNdRo, piÑeRoS , 2004   '): ")
 
-# 1. Recibimos un texto "sucio" (con espacios extra y mayúsculas/minúsculas mezcladas)
-datos_crudos = "   aLeJaNdRo, piÑeRoS, 23 , pYtHoN   "
+# 2. LIMPIEZA Y DIVISIÓN (Strip y Split)
+# Dividimos el texto por la coma para obtener una lista con las 3 partes
+datos_lista = datos_crudos.split(',')
 
-# 2. LIMPIEZA Y DIVISIÓN (Strip, Replace y Split)
-# Primero limpiamos los espacios de los bordes y luego dividimos por la coma
-datos_lista = datos_crudos.strip().replace(" ", "").split(',')
-# Resultado interno: ['aLeJaNdRo', 'piÑeRoS', '23', 'pYtHoN']
-
-# 3. ASIGNACIÓN Y FORMATO DE MAYÚSCULAS/MINÚSCULAS (Unpacking y Métodos)
-nombre, apellido, edad, lenguaje = datos_lista
-nombre = nombre.title()       # "Alejandro"
-apellido = apellido.title()   # "Piñeros"
-lenguaje = lenguaje.upper()   # "PYTHON"
+# 3. ASIGNACIÓN Y FORMATO (Unpacking y Métodos de limpieza)
+# Sacamos cada parte, le borramos los espacios extra (strip) y arreglamos las mayúsculas (title)
+nombre = datos_lista[0].strip().title()       
+apellido = datos_lista[1].strip().title()     
+anio = datos_lista[2].strip()                 
 
 # 4. VALIDACIONES (Métodos 'is...')
-edad_valida = edad.isdigit()  # ¿La edad contiene solo números? -> True
+anio_valido = anio.isdigit()  # ¿El año tiene solo números? -> True/False
+nombre_valido = nombre.isalpha() # ¿El nombre tiene solo letras? -> True/False
 
-# 5. ÍNDICES Y SLICING (Creando un "Nickname" de usuario)
-# Tomamos las 3 primeras letras del nombre y las 3 últimas del apellido
-nick_inicio = nombre[:3]      # "Ale"
-nick_fin = apellido[-3:]      # "ros"
-nickname = (nick_inicio + nick_fin).lower()  # "aleros"
+# 5. ÍNDICES Y SLICING (Creando el "Usuario" de la empresa)
+# Regla de la empresa: 1ª letra del nombre + 3 primeras del apellido + 2 últimos números del año
+inicial_nombre = nombre[0].lower()       # ej: "a"
+inicio_apellido = apellido[:3].lower()   # ej: "piñ"
+final_anio = anio[-2:]                   # ej: "04"
 
-# 6. BÚSQUEDA (Count y secuencias)
-nombre_completo = f"{nombre} {apellido}"
-cantidad_a = nombre_completo.lower().count('a') # Cuenta cuántas 'a' hay en total
+usuario_corp = inicial_nombre + inicio_apellido + final_anio # ej: "apiñ04"
+
+# 6. BÚSQUEDA Y OPERACIONES MATEMÁTICAS CON STRINGS
+nombre_completo = nombre + " " + apellido
+vocales_a = nombre_completo.lower().count('a') # Usamos lower() para contar todas las 'a' sin importar mayúsculas/minúsculas
+linea_separadora = "-" * 40  # Repetimos el guion 40 veces
 
 # ==========================================
 # RESULTADOS USANDO LOS 3 TIPOS DE FORMATEO
 # ==========================================
-print("\n\t[Perfil Generado]\n")
+print("\n\t[ CARNET GENERADO CON ÉXITO ]\n")
+print(linea_separadora)
 
 # Formateo 1: Clásico con %
-print("Nombre completo: %s %s" % (nombre, apellido))
+print("Empleado Registrado : %s %s" % (nombre, apellido))
 
-# Formateo 2: Con .format() (alineando a la derecha y rellenando la edad)
-print("Nickname : {:>8}".format(nickname))
-print("Edad     : {:05d}".format(int(edad))) # Se convierte a int() para usar el relleno con ceros
+# Formateo 2: Con .format() (Alineación a la derecha en 15 espacios)
+print("Usuario Corporativo : {:>15}".format(usuario_corp))
+print("Contraseña Temporal : {:>15}".format(nombre[::-1] + anio)) # Nombre al revés concatenado al año
 
-# Formateo 3: F-Strings (Poniendo lógica directamente dentro de las llaves)
-print(f"Lenguaje : {lenguaje.replace('PYTHON', 'Python 3')}")
-print(f"Seguridad: ¿Edad es número válido? -> {edad_valida}")
-print(f"Curiosidad: Tu nombre al revés es '{nombre_completo[::-1]}'")
-print(f"Estadística: Tu nombre completo tiene {cantidad_a} letras 'a'.")
+# Formateo 3: F-Strings (Lógica directa dentro de llaves)
+print(f"Correo Asignado     : {usuario_corp}@empresa.com")
+print(f"Seguridad           : Año numérico válido -> {anio_valido}")
+print(f"Curiosidad          : Tu nombre contiene {vocales_a} letras 'A'.")
+
+print(linea_separadora)
